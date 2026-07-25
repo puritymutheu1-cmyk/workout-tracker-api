@@ -65,3 +65,46 @@ erDiagram
 
 1. Clone the repo and move into the `server/` directory.
 2. Install dependencies:
+   ```
+   pipenv install
+   pipenv shell
+   ```
+3. Initialize and run migrations:
+   ```
+   flask db init
+   flask db migrate -m "initial migration"
+   flask db upgrade head
+   ```
+4. Seed the database:
+   ```
+   python seed.py
+   ```
+
+## Running the App
+
+```
+flask run
+```
+or
+```
+python app.py
+```
+
+The API runs on `http://localhost:5555`.
+
+## Endpoints
+
+| Method | Route | Description |
+|---|---|---|
+| GET | `/workouts` | List all workouts |
+| GET | `/workouts/<id>` | Show a single workout, including its associated exercises (with reps/sets/duration) |
+| POST | `/workouts` | Create a workout. Body: `{ "date": "YYYY-MM-DD", "duration_minutes": int, "notes": str }` |
+| DELETE | `/workouts/<id>` | Delete a workout (also deletes its associated `WorkoutExercises`) |
+| GET | `/exercises` | List all exercises |
+| GET | `/exercises/<id>` | Show a single exercise and the workouts its associated with |
+| POST | `/exercises` | Create an exercise. Body: `{ "name": str, "category": str, "equipment_needed": bool }` |
+| DELETE | `/exercises/<id>` | Delete an exercise (also deletes its associated `WorkoutExercises`) |
+| POST | `/workouts/<workout_id>/exercises/<exercise_id>/workout_exercises` | Add an exercise to a workout. Body: `{ "reps": int, "sets": int, "duration_seconds": int }` (all optional) |
+
+### Valid exercise categories
+`Cardio`, `Strength`, `Flexibility`, `Balance`
